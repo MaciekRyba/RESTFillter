@@ -25,7 +25,9 @@ namespace RESTclient
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        private string token;
+        private string password;
+        private string username;
 
         static HttpClient client = new HttpClient();
 
@@ -159,6 +161,9 @@ namespace RESTclient
 
         public async void bGetAll_Click(object sender, RoutedEventArgs e)
         {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token);
 
             List<Persons> persons = await GetAllPersonsAsync();
             AddValueToListBox(persons);
@@ -204,6 +209,10 @@ namespace RESTclient
 
         private async void bGetOne_Click(object sender, RoutedEventArgs e)
         {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token);
+
             int idValue = GetValueIdfromListBox();
             if (idValue != 0)
             {
@@ -245,7 +254,9 @@ namespace RESTclient
 
         private async void bFilter_Click(object sender, RoutedEventArgs e)
         {
-           
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token);
             string path = "api/Persons?";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -275,6 +286,31 @@ namespace RESTclient
             }
 
         }
+
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            AuthenticateRequest user = new AuthenticateRequest();
+            user.Username = UsernameTextBox.Text;
+            user.Password = PasswordBox.Password;
+
+            var json = JsonConvert.SerializeObject(user);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var responseMessage = await client.PostAsync("api/user", content);
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.Created)
+            {
+                AuthenticateResponse response = JsonConvert.DeserializeObject<AuthenticateResponse>(await responseMessage.Content.ReadAsStringAsync());
+                token = response.Token;
+                MessageBox.Show("Pomyślnie zalogowano \n" + "Witaj " + response.Username, "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(await responseMessage.Content.ReadAsStringAsync(), "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
+    }
     }
 

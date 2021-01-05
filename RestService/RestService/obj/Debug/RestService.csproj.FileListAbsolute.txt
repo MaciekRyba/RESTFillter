@@ -76,3 +76,11 @@ C:\Users\macie\source\repos\RestService\RestService\obj\Debug\RestService.csproj
 C:\Users\macie\source\repos\RestService\RestService\obj\Debug\RestService.csproj.CopyComplete
 C:\Users\macie\source\repos\RestService\RestService\obj\Debug\RestService.dll
 C:\Users\macie\source\repos\RestService\RestService\obj\Debug\RestService.pdb
+C:\Users\macie\source\repos\RestService\RestService\bin\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\macie\source\repos\RestService\RestService\bin\Microsoft.IdentityModel.Logging.dll
+C:\Users\macie\source\repos\RestService\RestService\bin\Microsoft.IdentityModel.Tokens.dll
+C:\Users\macie\source\repos\RestService\RestService\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\macie\source\repos\RestService\RestService\bin\Microsoft.IdentityModel.JsonWebTokens.xml
+C:\Users\macie\source\repos\RestService\RestService\bin\Microsoft.IdentityModel.Logging.xml
+C:\Users\macie\source\repos\RestService\RestService\bin\Microsoft.IdentityModel.Tokens.xml
+C:\Users\macie\source\repos\RestService\RestService\bin\System.IdentityModel.Tokens.Jwt.xml

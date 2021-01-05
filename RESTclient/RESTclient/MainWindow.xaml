@@ -9,6 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="320" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -72,6 +73,14 @@
         <ListBox x:Name="personsList" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
         </ListBox>
 
+        <StackPanel  Grid.Column="2" Grid.Row="0">
+            <Label FontSize="15" FontWeight="Bold">Logowanie:</Label>
+            <Label>Login:</Label>
+            <TextBox x:Name="UsernameTextBox"/>
+            <Label>Hasło:</Label>
+            <PasswordBox x:Name="PasswordBox"/>
+            <Button x:Name="LoginButton" Content="Zaloguj" Click="LoginButton_Click"/>
+        </StackPanel>
 
     </Grid>
 </Window>

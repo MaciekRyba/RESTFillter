@@ -15,20 +15,43 @@ namespace RestService.Controllers
             new Persons(){id = 2,name = "Ala", surname = "Kot",city="Bialystok",year=1997, pet= new Pets{name = "Alfa", animal = "Kot", year = 2018 }, car = new Cars{ theCarBrand = "BMW", year = 2010, color = "Czarny", mileage = 10000}},
             new Persons(){id = 3,name = "Ala", surname = "Nowak",city="Krakow",year=1997, pet= new Pets{name = "Max", animal = "Papuga", year = 2015 }, car = new Cars{ theCarBrand = "Fiat", year = 1998, color = "Czerwony", mileage = 10000}}
         };
+
+        private static List<User> users { get; set; } = new List<User>()
+                    {
+                        new User(1,"admin","password"),
+                    };
+
         // GET api/<controller>
         public IEnumerable<Persons> Get()
         {
-            return lstPersons;
+            if (Request.Headers.Contains("Authorization"))
+            {
+                var token = Request.Headers.GetValues("Authorization").FirstOrDefault()?.Split(' ').Last();
+                if (JWTAuth.ValidateJwtToken(token))
+                {
+                    return lstPersons;
+                }
+            }
+            return null;
         }
 
         public HttpResponseMessage Get(int id)
         {
-            var item = lstPersons.FirstOrDefault(x => x.id == id);
-            if (item != null)
+            if (Request.Headers.Contains("Authorization"))
             {
-                return Request.CreateResponse(HttpStatusCode.OK, item);
+                var token = Request.Headers.GetValues("Authorization").FirstOrDefault()?.Split(' ').Last();
+                if (JWTAuth.ValidateJwtToken(token))
+                {
+                    var item = lstPersons.FirstOrDefault(x => x.id == id);
+                    if (item != null)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, item);
+                    }
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, "Invalid token");
             }
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            return Request.CreateResponse(HttpStatusCode.Unauthorized, "No authorization header");
         }
 
         [Route("api/Persons/{name?}/{city?}/{year?}/{contains?}/{lettersize?}")]
